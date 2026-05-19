@@ -1,0 +1,171 @@
+@model GymFlow.Models.LogWorkoutViewModel
+@inject GymFlow.Data.ApplicationDbContext DbContext
+
+@{
+    ViewData["Title"] = "Zaloguj Trening";
+    var workout = ViewBag.Workout as GymFlow.Models.Workout;
+    var workoutExercises = ViewBag.WorkoutExercises as List<GymFlow.Models.WorkoutExercise>;
+    var workouts = ViewBag.Workouts as List<GymFlow.Models.Workout>;
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2><i class="bi bi-check-circle"></i> Zaloguj Trening</h2>
+            <p class="text-muted">Wpisz wyniki dla wszystkich ćwiczeń z Twojego treningu</p>
+        </div>
+    </div>
+
+    @if (workout == null)
+    {
+        <!-- Wybór treningu -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        Wybierz Trening
+                    </div>
+                    <div class="card-body">
+                        @if (workouts == null || workouts.Count == 0)
+                        {
+                            <div class="alert alert-info">
+                                Brak aktywnych treningów. <a asp-controller="Workouts" asp-action="Create">Stwórz nowy trening</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="list-group">
+                                @foreach (var w in workouts)
+                                {
+                                    <a asp-action="LogWorkout" asp-route-workoutId="@w.Id" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">@w.Name</h5>
+                                            <small class="text-muted">@w.CreatedAt.ToString("dd.MM.yyyy")</small>
+                                        </div>
+                                        <p class="mb-1">@w.Description</p>
+                                        <small class="text-muted">
+                                            <i class="bi bi-dumbbell"></i> 
+                                            @{
+                                                var exerciseCount = DbContext.WorkoutExercises.Where(we => we.WorkoutId == w.Id).Count();
+                                            }
+                                            @exerciseCount ćwiczenie(ń)
+                                        </small>
+                                    </a>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Formularz do zalogowania treningu -->
+        <form method="post" asp-action="LogWorkout">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="workoutId" value="@workout.Id" />
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">@workout.Name</h5>
+                </div>
+                <div class="card-body">
+                    <p>@workout.Description</p>
+                </div>
+            </div>
+
+            @if (workoutExercises == null || workoutExercises.Count == 0)
+            {
+                <div class="alert alert-info">
+                    Ten trening nie ma żadnych ćwiczeń. <a asp-controller="Workouts" asp-action="Details" asp-route-id="@workout.Id">Dodaj ćwiczenia do treningu</a>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var we in workoutExercises)
+                    {
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h6 class="mb-0">
+                                        <i class="bi bi-dumbbell"></i> @we.Exercise?.Name
+                                    </h6>
+                                    <small class="text-muted">@we.Exercise?.ExerciseCategory?.Name</small>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Serie (zaplanowane: @we.Sets)</label>
+                                        <input type="number" 
+                                               name="exercisesData[@we.Id].Sets" 
+                                               class="form-control" 
+                                               value="@we.Sets" 
+                                               min="0" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Powtórzenia (zaplanowane: @we.Reps)</label>
+                                        <input type="number" 
+                                               name="exercisesData[@we.Id].Reps" 
+                                               class="form-control" 
+                                               value="@we.Reps" 
+                                               min="0" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Waga (kg) (zaplanowana: @(we.Weight > 0 ? we.Weight.ToString() : "-"))</label>
+                                        <input type="number" 
+                                               name="exercisesData[@we.Id].Weight" 
+                                               class="form-control" 
+                                               value="@we.Weight" 
+                                               min="0" 
+                                               step="0.5" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Opór</label>
+                                        <input type="text" 
+                                               name="exercisesData[@we.Id].Resistance" 
+                                               class="form-control" 
+                                               placeholder="Łatwe, Średnie, Trudne" />
+                                    </div>
+
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" 
+                                               name="exercisesData[@we.Id].IsCompleted" 
+                                               class="form-check-input" 
+                                               value="true" 
+                                               checked />
+                                        <label class="form-check-label">
+                                            Ćwiczenie Ukończone
+                                        </label>
+                                    </div>
+
+                                    <div class="mb-0">
+                                        <label class="form-label">Notatki</label>
+                                        <textarea name="exercisesData[@we.Id].Notes" 
+                                                  class="form-control" 
+                                                  rows="2" 
+                                                  placeholder="Dodaj notatki (opcjonalnie)"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-8">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle"></i> Zapisz Trening
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-arrow-left"></i> Anuluj
+                        </a>
+                    </div>
+                </div>
+            }
+        </form>
+    }
+</div>

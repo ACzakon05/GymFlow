@@ -1,0 +1,80 @@
+@model Workout
+
+@{
+    ViewData["Title"] = "Szczegóły Treningu";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>@Model.Name</h2>
+            <p class="text-muted">@Model.Description</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                <i class="bi bi-pencil"></i> Edytuj
+            </a>
+            <a asp-action="AddExercise" asp-route-workoutId="@Model.Id" class="btn btn-success">
+                <i class="bi bi-plus"></i> Dodaj Ćwiczenie
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-list-check"></i> Ćwiczenia w treningu (@Model.WorkoutExercises.Count)</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.WorkoutExercises.Count == 0)
+                    {
+                        <p class="text-muted">Trening nie zawiera jeszcze żadnych ćwiczeń.</p>
+                    }
+                    else
+                    {
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Kolejność</th>
+                                    <th>Nazwa Ćwiczenia</th>
+                                    <th>Kategoria</th>
+                                    <th>Serie</th>
+                                    <th>Powtórzenia</th>
+                                    <th>Ciężar (kg)</th>
+                                    <th>Akcje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var we in Model.WorkoutExercises.OrderBy(x => x.Order))
+                                {
+                                    <tr>
+                                        <td><strong>@we.Order</strong></td>
+                                        <td>@we.Exercise?.Name</td>
+                                        <td><small>@we.Exercise?.ExerciseCategory?.Name</small></td>
+                                        <td>@we.Sets</td>
+                                        <td>@we.Reps</td>
+                                        <td>@if (we.Weight.HasValue) { @we.Weight } else { <span class="text-muted">-</span> }</td>
+                                        <td>
+                                            <form asp-action="RemoveExercise" asp-route-workoutId="@Model.Id" asp-route-workoutExerciseId="@we.Id" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Usunąć ćwiczenie?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Wróć do listy
+        </a>
+    </div>
+</div>

@@ -1,0 +1,119 @@
+@model ProgressEntry
+
+@{
+    ViewData["Title"] = "Szczegóły Wpisu Postępu";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2><i class="bi bi-file-text"></i> Szczegóły Wpisu</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-3">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">@Model.Exercise?.Name</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted">Kategoria</label>
+                            <p>@Model.Exercise?.ExerciseCategory?.Name</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-muted">Data</label>
+                            <p>@Model.Date.ToString("dd.MM.yyyy HH:mm")</p>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label text-muted">Serie Ukończone</label>
+                            <p><strong>@Model.CompletedSets</strong></p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted">Powtórzenia Ukończone</label>
+                            <p><strong>@Model.CompletedReps</strong></p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted">Waga (kg)</label>
+                            <p><strong>@Model.ActualWeight</strong></p>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted">Status</label>
+                            <p>
+                                @if (Model.IsCompleted)
+                                {
+                                    <span class="badge bg-success" style="font-size: 0.95rem;">
+                                        <i class="bi bi-check"></i> Ukończone
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary" style="font-size: 0.95rem;">
+                                        Niezukończone
+                                    </span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-muted">Opór</label>
+                            <p>
+                                @if (!string.IsNullOrEmpty(Model.Resistance))
+                                {
+                                    <span>@Model.Resistance</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    {
+                        <hr />
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Notatki</label>
+                            <p>@Model.Notes</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-light">
+                    Akcje
+                </div>
+                <div class="card-body">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning w-100 mb-2">
+                        <i class="bi bi-pencil"></i> Edytuj
+                    </a>
+                    <form method="post" asp-action="Delete">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-danger w-100 mb-2" onclick="return confirm('Czy na pewno chcesz usunąć ten wpis?')">
+                            <i class="bi bi-trash"></i> Usuń
+                        </button>
+                    </form>
+                    <a asp-action="Index" class="btn btn-secondary w-100">
+                        <i class="bi bi-arrow-left"></i> Wróć
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+@model GymFlow.Models.Exercise
+@using GymFlow.Models
+
+@{
+    ViewData["Title"] = "Nowe ćwiczenie";
+}
+
+<div class="container mt-4">
+
+    <h1>Nowe ćwiczenie</h1>
+
+    <form asp-action="Create" method="post">
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+
+            <input asp-for="Name" class="form-control" />
+
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+
+            <textarea asp-for="Description"
+                      class="form-control"
+                      rows="4"></textarea>
+
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ExerciseCategoryId" class="form-label">
+                Kategoria
+            </label>
+
+            <select asp-for="ExerciseCategoryId"
+                    class="form-select">
+
+                <option value="">-- wybierz kategorię --</option>
+
+                @foreach (var category in ViewBag.Categories)
+                {
+                    <option value="@category.Id">
+                        @category.Name
+                    </option>
+                }
+
+            </select>
+
+            <span asp-validation-for="ExerciseCategoryId"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MuscleGroup" class="form-label"></label>
+
+            <input asp-for="MuscleGroup" class="form-control" />
+
+            <span asp-validation-for="MuscleGroup"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Difficulty" class="form-label"></label>
+
+            <select asp-for="Difficulty" class="form-select">
+                <option value="Easy">Łatwe</option>
+                <option value="Medium">Średnie</option>
+                <option value="Hard">Trudne</option>
+            </select>
+
+            <span asp-validation-for="Difficulty"
+                  class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Zapisz
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Anuluj
+        </a>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

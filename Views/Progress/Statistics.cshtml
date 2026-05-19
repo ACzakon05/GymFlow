@@ -1,0 +1,143 @@
+@model ProgressStatistics
+
+@{
+    ViewData["Title"] = "Statystyki Postępu";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-bar-chart"></i> Twoje Statystyki</h2>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Całkowite Treningi</h6>
+                    <h3 class="display-5">@Model.TotalWorkouts</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Różne Ćwiczenia</h6>
+                    <h3 class="display-5">@Model.TotalExercises</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Maksymalna Waga</h6>
+                    <h3 class="display-5">
+                        @if (Model.MaxWeight > 0)
+                        {
+                            <span>@Model.MaxWeight.ToString("F1") kg</span>
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Średnie Powtórzenia</h6>
+                    <h3 class="display-5">
+                        @if (Model.AvgReps > 0)
+                        {
+                            <span>@Model.AvgReps.ToString("F0")</span>
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exercise Statistics Table -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="bi bi-table"></i> Statystyki Ćwiczeń</h5>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.ExerciseStats == null || Model.ExerciseStats.Count == 0)
+            {
+                <div class="p-3 alert alert-info mb-0">
+                    Brak danych statystyk. <a asp-controller="Progress" asp-action="Create">Dodaj wpis postępu</a> aby rozpocząć śledzenie!
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ćwiczenie</th>
+                                <th>Kategoria</th>
+                                <th>Liczba Wpisów</th>
+                                <th>Max Waga (kg)</th>
+                                <th>Średnie Powtórzenia</th>
+                                <th>Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var stat in Model.ExerciseStats.OrderByDescending(s => s.EntryCount))
+                            {
+                                <tr>
+                                    <td><strong>@stat.ExerciseName</strong></td>
+                                    <td>@stat.CategoryName</td>
+                                    <td>
+                                        <span class="badge bg-secondary">@stat.EntryCount</span>
+                                    </td>
+                                    <td>
+                                        @if (stat.MaxWeight > 0)
+                                        {
+                                            <span>@stat.MaxWeight.ToString("F1")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (stat.AvgReps > 0)
+                                        {
+                                            <span>@stat.AvgReps.ToString("F0")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Progress" asp-action="Index" asp-route-exerciseId="@stat.ExerciseId" class="btn btn-sm btn-info" title="Pokaż wpisy">
+                                            <i class="bi bi-list"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <a asp-controller="Progress" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus"></i> Dodaj Nowy Wpis Postępu
+            </a>
+            <a asp-controller="Progress" asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Wszystkie Wpisy
+            </a>
+        </div>
+    </div>
+</div>

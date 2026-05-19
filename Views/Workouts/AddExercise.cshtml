@@ -1,0 +1,85 @@
+@model List<Exercise>
+
+@{
+    ViewData["Title"] = "Dodaj Ćwiczenie do Treningu";
+    int workoutId = (int)ViewBag.WorkoutId;
+    string workoutName = ViewBag.WorkoutName;
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2><i class="bi bi-plus-circle"></i> Dodaj Ćwiczenie</h2>
+            <p class="text-muted">Trening: <strong>@workoutName</strong></p>
+        </div>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            Wszystkie dostępne ćwiczenia są już w tym treningu!
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var exercise in Model)
+            {
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@exercise.Name</h5>
+                            <p class="card-text text-muted">@exercise.Description</p>
+                            
+                            <div class="mb-3">
+                                <small class="text-secondary">
+                                    <i class="bi bi-folder"></i> @exercise.ExerciseCategory?.Name
+                                </small>
+                                @switch ((ExerciseDifficulty)exercise.Difficulty)
+                                {
+                                    case ExerciseDifficulty.Easy:
+                                        <span class="badge bg-success">Łatwe</span>
+                                        break;
+                                    case ExerciseDifficulty.Medium:
+                                        <span class="badge bg-warning">Średnie</span>
+                                        break;
+                                    case ExerciseDifficulty.Hard:
+                                        <span class="badge bg-danger">Trudne</span>
+                                        break;
+                                }
+                            </div>
+
+                            <form method="post" asp-action="AddExercise">
+                                @Html.AntiForgeryToken()
+                                
+                                <input type="hidden" name="workoutId" value="@workoutId" />
+                                <input type="hidden" name="exerciseId" value="@exercise.Id" />
+
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <label class="form-label small">Serie</label>
+                                        <input type="number" name="sets" class="form-control form-control-sm" value="3" min="1" />
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small">Powtórzenia</label>
+                                        <input type="number" name="reps" class="form-control form-control-sm" value="10" min="1" />
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-sm btn-primary w-100">
+                                    <i class="bi bi-check"></i> Dodaj
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-action="Details" asp-route-id="@workoutId" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Wróć do Treningu
+        </a>
+    </div>
+</div>

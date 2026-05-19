@@ -1,0 +1,69 @@
+@model GymFlow.Models.Exercise
+@using GymFlow.Models
+
+@{
+    ViewData["Title"] = "Szczegóły ćwiczenia";
+}
+
+<div class="container mt-4">
+
+    <h1 class="mb-4">@Model.Name</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h5 class="card-title">Informacje o ćwiczeniu</h5>
+
+            <hr />
+
+            <p>
+                <strong>Kategoria:</strong>
+                @Model.ExerciseCategory?.Name
+            </p>
+
+            <p>
+                <strong>Grupa mięśniowa:</strong>
+                @Model.MuscleGroup
+            </p>
+
+            <p>
+                <strong>Opis:</strong><br />
+                @Model.Description
+            </p>
+
+            <p>
+                <strong>Trudność:</strong>
+
+                @switch (Model.Difficulty)
+                {
+                    case ExerciseDifficulty.Easy:
+                        <span class="badge bg-success">Łatwe</span>
+                        break;
+
+                    case ExerciseDifficulty.Medium:
+                        <span class="badge bg-warning">Średnie</span>
+                        break;
+
+                    case ExerciseDifficulty.Hard:
+                        <span class="badge bg-danger">Trudne</span>
+                        break;
+                }
+            </p>
+
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-warning">
+            Edytuj
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Wróć do listy
+        </a>
+    </div>
+
+</div>

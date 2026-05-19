@@ -1,0 +1,64 @@
+@model List<Exercise>
+@using GymFlow.Models
+
+@{
+    ViewData["Title"] = "Ćwiczenia";
+}
+
+<!-- Nagłówek -->
+<h2>Moje Ćwiczenia</h2>
+
+<!-- Przycisk dodania nowego ćwiczenia -->
+<a asp-action="Create" class="btn btn-primary mb-3">
+    + Dodaj nowe
+</a>
+
+<!-- Tabela z ćwiczeniami -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nazwa</th>
+            <th>Kategoria</th>
+            <th>Trudność</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exercise in Model)
+        {
+            <tr>
+                <td>@exercise.Id</td>
+                <td>@exercise.Name</td>
+                <td>@exercise.ExerciseCategory?.Name</td>
+                <td>
+                    @switch (exercise.Difficulty)
+                    {
+                        case ExerciseDifficulty.Easy:
+                            <span class="badge bg-success">Łatwe</span>
+                            break;
+                        case ExerciseDifficulty.Medium:
+                            <span class="badge bg-warning">Średnie</span>
+                            break;
+                        case ExerciseDifficulty.Hard:
+                            <span class="badge bg-danger">Trudne</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@exercise.Id" class="btn btn-sm btn-info">
+                        Szczegóły
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@exercise.Id" class="btn btn-sm btn-warning">
+                        Edytuj
+                    </a>
+                    <form asp-action="Delete" asp-route-id="@exercise.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Na pewno?')">
+                            Usuń
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

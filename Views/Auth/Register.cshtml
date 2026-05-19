@@ -1,0 +1,97 @@
+@using GymFlow.Controllers
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Rejestracja - GymFlow";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body p-4">
+                    <h2 class="card-title text-center mb-4">
+                        <i class="bi bi-person-plus"></i> Rejestracja
+                    </h2>
+
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.Message
+                        </div>
+                    }
+
+                    <form method="post" asp-action="Register" asp-controller="Auth">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label"></label>
+                            <input asp-for="Username" class="form-control" 
+                                   placeholder="Wpisz nazwę użytkownika" />
+                            <span asp-validation-for="Username" class="invalid-feedback"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" 
+                                   placeholder="Wpisz swój email" />
+                            <span asp-validation-for="Email" class="invalid-feedback"></span>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" 
+                                   placeholder="Wpisz imię (opcjonalne)" />
+                            <span asp-validation-for="FirstName" class="invalid-feedback"></span>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" 
+                                   placeholder="Wpisz nazwisko (opcjonalne)" />
+                            <span asp-validation-for="LastName" class="invalid-feedback"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control" 
+                                   placeholder="Minimalna 6 znaków" />
+                            <span asp-validation-for="Password" class="invalid-feedback"></span>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" 
+                                   placeholder="Powtórz hasło" />
+                            <span asp-validation-for="ConfirmPassword" class="invalid-feedback"></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary w-100 mb-3">
+                            <i class="bi bi-person-check"></i> Zarejestruj się
+                        </button>
+                    </form>
+
+                    <!-- Link do logowania -->
+                    <div class="text-center">
+                        <p class="text-muted">Masz już konto? 
+                            <a asp-action="Login" asp-controller="Auth" class="text-primary fw-bold">
+                                Zaloguj się
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

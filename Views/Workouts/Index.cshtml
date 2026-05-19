@@ -1,0 +1,69 @@
+@model List<Workout>
+
+@{
+    ViewData["Title"] = "Moje Treningi";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2><i class="bi bi-dumbbell"></i> Moje Treningi</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Nowy Trening
+            </a>
+        </div>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Nie masz jeszcze żadnych treningów. <a asp-action="Create">Stwórz pierwszy!</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var workout in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@workout.Name</h5>
+                            <p class="card-text text-muted">@workout.Description</p>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar"></i> @workout.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+                                </small>
+                                @if (workout.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktywny</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Nieaktywny</span>
+                                }
+                            </div>
+
+                            <div class="btn-group" role="group">
+                                <a asp-action="Details" asp-route-id="@workout.Id" class="btn btn-sm btn-info">
+                                    <i class="bi bi-eye"></i> Szczegóły
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@workout.Id" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-pencil"></i> Edytuj
+                                </a>
+                                <form asp-action="Delete" asp-route-id="@workout.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Na pewno usunąć?')">
+                                        <i class="bi bi-trash"></i> Usuń
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

@@ -1,0 +1,123 @@
+@model ProgressEntry
+
+@{
+    ViewData["Title"] = "Dodaj Wpis Postępu";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2><i class="bi bi-plus-circle"></i> Nowy Wpis Postępu</h2>
+            <p class="text-muted">Zaloguj swoją sesję treningową</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <form method="post" asp-action="Create">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        Podstawowe Informacje
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="ExerciseId" class="form-label">Ćwiczenie<span class="text-danger">*</span></label>
+                            <select asp-for="ExerciseId" class="form-select" asp-items="ViewBag.Exercises">
+                                <option value="">-- Wybierz ćwiczenie --</option>
+                            </select>
+                            <span asp-validation-for="ExerciseId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Date" class="form-label">Data i Godzina<span class="text-danger">*</span></label>
+                            <input asp-for="Date" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="Date" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        Wyniki Treningowe
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="CompletedSets" class="form-label">Serie Ukończone<span class="text-danger">*</span></label>
+                                <input asp-for="CompletedSets" type="number" class="form-control" min="0" />
+                                <span asp-validation-for="CompletedSets" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="CompletedReps" class="form-label">Powtórzenia<span class="text-danger">*</span></label>
+                                <input asp-for="CompletedReps" type="number" class="form-control" min="0" />
+                                <span asp-validation-for="CompletedReps" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="ActualWeight" class="form-label">Waga (kg)</label>
+                                <input asp-for="ActualWeight" type="number" class="form-control" min="0" step="0.5" />
+                                <span asp-validation-for="ActualWeight" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        Dodatkowe Informacje
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Resistance" class="form-label">Opór</label>
+                            <input asp-for="Resistance" type="text" class="form-control" placeholder="np. Łatwe, Średnie, Trudne" />
+                            <small class="text-muted">Opisz jak trudne było ćwiczenie subiektywnie</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="IsCompleted" class="form-check-label">
+                                <input asp-for="IsCompleted" type="checkbox" class="form-check-input" />
+                                Ćwiczenie Ukończone
+                            </label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Notes" class="form-label">Notatki</label>
+                            <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Dodaj notatki o tej sesji (opcjonalnie)"></textarea>
+                            <span asp-validation-for="Notes" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check"></i> Zapisz Wpis
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Anuluj
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title"><i class="bi bi-info-circle"></i> Wskazówki</h6>
+                    <ul class="small">
+                        <li>Ustaw datę i godzinę wykonania treningu</li>
+                        <li>Liczby: ile serii i powtórzeń faktycznie wykonałeś</li>
+                        <li>Waga: ile kilogramów podniosłeś (opcjonalnie)</li>
+                        <li>Opór: subiektywna ocena trudności</li>
+                        <li>Zaznacz "Ukończone" jeśli w pełni wykonałeś ćwiczenie</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
