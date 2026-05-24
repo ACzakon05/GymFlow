@@ -127,3 +127,8 @@
 /home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/obj/Debug/net8.0/GymFlow.genruntimeconfig.cache
 /home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/obj/Debug/net8.0/ref/GymFlow.dll
 /home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/obj/Debug/net8.0/GymFlow.sourcelink.json
+/home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/bin/Debug/net8.0/Microsoft.OpenApi.dll
+/home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
+/home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/obj/Debug/net8.0/GymFlow.MvcApplicationPartsAssemblyInfo.cs

@@ -28,8 +28,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Authorization
 builder.Services.AddAuthorization();
 
-// MVC Controllers with Views
+// MVC Controllers with Views and API controllers
 builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // ========== BUDOWANIE APLIKACJI ==========
 
@@ -56,11 +58,37 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "GymFlow API V1");
+});
+
 // ========== ROUTING ==========
+
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var usersWithoutKey = await db.Users
+        .Where(u => string.IsNullOrWhiteSpace(u.ApiKey))
+        .ToListAsync();
+
+    if (usersWithoutKey.Any())
+    {
+        foreach (var user in usersWithoutKey)
+        {
+            user.ApiKey = Guid.NewGuid().ToString();
+        }
+
+        await db.SaveChangesAsync();
+    }
+}
 
 app.Run();
 

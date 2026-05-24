@@ -75,22 +75,28 @@ Stworzone 6 modeli w `/Models/`:
 ## 📅 PLANY NA JUTRO (ETAP 4+)
 
 ### ETAP 4: Autoryzacja (Logowanie/Rejestracja)
-- [ ] AuthController.cs - rejestracja i logowanie
-- [ ] Hashowanie haseł - BCrypt lub Identity
-- [ ] Views - Login i Register
-- [ ] Sessions / Cookies
+- [X] AuthController.cs - rejestracja i logowanie
+- [X] Hashowanie haseł - BCrypt lub Identity
+- [X] Views - Login i Register
+- [X] Sessions / Cookies
 
 ### ETAP 5: CRUD dla Ćwiczeń
-- [ ] ExercisesController.cs
-- [ ] Views do managementu ćwiczeń
+- [X] ExercisesController.cs
+- [X] Views do managementu ćwiczeń
 
 ### ETAP 6: CRUD dla Treningów
-- [ ] WorkoutsController.cs
-- [ ] Dodawanie ćwiczeń do treningów
+- [X] WorkoutsController.cs
+- [X] Dodawanie ćwiczeń do treningów
 
 ### ETAP 7: Śledzenie Postępu
-- [ ] ProgressController.cs
-- [ ] Dashboard ze statystykami
+- [X] ProgressController.cs
+- [X] Dashboard ze statystykami
+
+### ETAP 8: Admin Panel
+- [X] AdminController.cs - zarządzanie użytkownikami, ćwiczeniami, treningami
+- [X] Role-based access control (Admin vs User)
+- [X] Widoki admina
+- [X] Logi aktywności
 
 ### ETAP 8: REST API
 - [ ] ApiController - endpoints JSON
@@ -104,11 +110,12 @@ Stworzone 6 modeli w `/Models/`:
 ```
 GymFlow/
 ├── Controllers/
-│   ├── HomeController.cs        (domyślny)
-│   ├── AuthController.cs        (TODO)
-│   ├── ExercisesController.cs   (TODO)
-│   ├── WorkoutsController.cs    (TODO)
-│   ├── ProgressController.cs    (TODO)
+│   ├── HomeController.cs        
+│   ├── AuthController.cs        
+│   ├── ExercisesController.cs   
+│   ├── WorkoutsController.cs    
+│   ├── ProgressController.cs  
+|   ├── AdminController.cs
 │   └── Api/
 │       └── ApiController.cs     (TODO)
 ├── Models/
