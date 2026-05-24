@@ -126,3 +126,4 @@
 /home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/obj/Debug/net8.0/GymFlow.pdb
 /home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/obj/Debug/net8.0/GymFlow.genruntimeconfig.cache
 /home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/obj/Debug/net8.0/ref/GymFlow.dll
+/home/adam/Dokumenty/Studia/Semestr_4/pz2/projekt/GymFlow/obj/Debug/net8.0/GymFlow.sourcelink.json

@@ -1,0 +1,109 @@
+@model GymFlow.Controllers.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard Administratora";
+}
+
+<div class="container mt-4">
+    <h2><i class="bi bi-speedometer2"></i> Dashboard Administratora</h2>
+
+    <!-- Statystyki Główne -->
+    <div class="row mb-4 mt-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-center border-primary">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Ogółem Użytkowników</h6>
+                    <h3 class="display-5 text-primary">@Model.TotalUsers</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-center border-danger">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Administratorów</h6>
+                    <h3 class="display-5 text-danger">@Model.AdminCount</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-center border-warning">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Nieaktywnych Kont</h6>
+                    <h3 class="display-5 text-warning">@Model.InactiveUsers</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-center border-info">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Treningów</h6>
+                    <h3 class="display-5 text-info">@Model.TotalWorkouts</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card text-center border-success">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Wpisów Postępu</h6>
+                    <h3 class="display-5 text-success">@Model.TotalProgressEntries</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ostatnio Zarejestrowani Użytkownicy -->
+    <div class="card">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="bi bi-clock-history"></i> Ostatnio Zarejestrowani Użytkownicy</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.RecentUsers.Count == 0)
+            {
+                <p class="text-muted">Brak nowych rejestracji.</p>
+            }
+            else
+            {
+                <div class="list-group">
+                    @foreach (var user in Model.RecentUsers)
+                    {
+                        <a asp-action="UserDetails" asp-route-id="@user.Id" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <strong>@user.Username</strong>
+                                <small class="text-muted">@user.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                            </div>
+                            <p class="mb-1">@user.Email</p>
+                            <small>
+                                @if (user.Role == GymFlow.Models.UserRole.Admin)
+                                {
+                                    <span class="badge bg-danger">Admin</span>
+                                }
+                                @if (!user.IsActive)
+                                {
+                                    <span class="badge bg-warning">Nieaktywny</span>
+                                }
+                            </small>
+                        </a>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Nawigacja -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <a asp-action="Index" class="btn btn-info">
+                <i class="bi bi-people"></i> Zarządzaj Użytkownikami
+            </a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Wróć na Stronę Główną
+            </a>
+        </div>
+    </div>
+</div>

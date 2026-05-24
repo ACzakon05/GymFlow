@@ -273,6 +273,22 @@ namespace GymFlow.Data
                     CreatedAt = DateTime.UtcNow
                 }
             );
+
+            // Dodaj domyślnego admina
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 999,
+                    Username = "admin",
+                    Email = "admin@gymflow.pl",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
+                    FirstName = "Administrator",
+                    LastName = "GymFlow",
+                    Role = UserRole.Admin,
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow
+                }
+            );
         }
     }
 }
