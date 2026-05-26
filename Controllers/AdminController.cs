@@ -77,7 +77,7 @@ namespace GymFlow.Controllers
             var users = await query.ToListAsync();
             ViewBag.SearchTerm = searchTerm;
 
-            return View(users);
+            return View("Users", users);
         }
 
         [HttpGet]
@@ -95,13 +95,24 @@ namespace GymFlow.Controllers
         /// GET - wyświetla formularz edycji użytkownika
         /// </summary>
         [HttpGet]
-        [ValidateAntiForgeryToken]
+    
         public async Task<IActionResult> EditUser(int? id)
         {
             if (id == null) return NotFound();
             var user = await _context.Users.FindAsync(id);
             if (user == null) return NotFound();
-            return View(user);
+
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role,
+                IsActive = user.IsActive
+            };
+
+            return View(model);
         }
 
         /// <summary>

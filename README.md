@@ -38,7 +38,7 @@ GymFlow to aplikacja ASP.NET Core MVC do zarządzania treningami, ćwiczeniami i
 dotnet run
 ```
 
-3. W przeglądarce otwórz stronę aplikacji, np. `http://localhost:5000`
+3. W przeglądarce otwórz stronę aplikacji, np. `http://localhost:xxxx`
 
 ## REST API
 
@@ -100,7 +100,7 @@ curl -H "X-Api-Username: admin" \
 
 Po uruchomieniu aplikacji dostępny jest Swagger UI pod adresem:
 
-- `http://localhost:5000/swagger`
+- `http://localhost:xxxx/swagger`
 
 ## Baza danych
 
